@@ -29,27 +29,37 @@
             </form>
           </div>
         </div>
-    <div style="overflow-y: scroll; max-height: 70vh">
+    <div style="overflow-y: scroll; max-height: 50vh">
         {% if posts %}
 
 {% for p in posts %}
 <div class="card" style=" max-width: 75%; margin-left: auto; margin-right: auto">
 <div class="card-content">
-    <br>
     Posted by: {{ p.username }}
     <br>
     <span class="card-title activator grey-text text-darken-4">{{ p.text }}</span>
     <br>
+  <nav>
+    <div class="nav-wrapper">
+      <a href="#" class="brand-logo">Logo</a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li><a href="sass.html">Sass</a></li>
+        <li><a href="badges.html">Components</a></li>
+        <li><a href="collapsible.html">JavaScript</a></li>
+      </ul>
+    </div>
+  </nav>
     Likes: {{ p.likes }} Dislikes: {{ p.dislikes }}
     <br>
 
- <a href="/myfriendspace/like/{{ p.id }}">Like</a>
- <a href="/myfriendspace/dislike/{{ p.id }}">Dislike</a>
+ <a class="btn  blue lighten-1 white-text" href="/myfriendspace/like/{{ p.id }}">Like</a>
+ <a class="btn  red lighten-3 white-text" href="/myfriendspace/dislike/{{ p.id }}">Dislike</a>
 
         {% if p.userId == current_user.id %}
             <form action="/myfriendspace/delete/{{ p.id }}" method="post">
             <!-- The user can only delete their own posts-->
-    <input type="number" name="pid" id="postid" value="{{ p.id }}" style="display: none"> <input class="btn grey white-text" type="submit" id="submit" value="Delete">
+    <input type="number" name="pid" id="postid" value="{{ p.id }}" style="display: none">
+            <input class="btn  grey darken-1 white-text" type="submit" id="submit" value="Delete">
     {% endif %}
     </form>
 </div>
@@ -62,8 +72,5 @@
 
 {% endblock %}
 
-{% block javascript %}
-
-{% endblock %}
 
 
