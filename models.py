@@ -1,9 +1,10 @@
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 db = SQLAlchemy()
 
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
@@ -30,6 +31,7 @@ class Post(db.Model):
     text = db.Column(db.String(280), nullable=False)  # Same length as twitter
     reacts = db.relationship('UserReact')
 
+
     def getTotalLikes(self):
         numLikes = 0
         for r in self.reacts:
@@ -44,10 +46,14 @@ class Post(db.Model):
                 numDislikes += 1
         return numDislikes
 
+    def getusername(self):
+        name = User.query(User.username).filter_by(userId=self.userId).first()
+        return name
+
     def toDict(self):
         return {
             'userId': self.userId,
-            # 'username': self.username,  # TODO: somehow fetch username
+            'username': self.getusername(),  # TODO: somehow fetch username
             'text': self.text,
             'likes': self.getTotalLikes(),
             'dislikes': self.getTotalDislikes()
