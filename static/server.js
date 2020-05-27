@@ -1,1 +1,1 @@
-const server = "https://info2602ps--snickdx.repl.co";
+const server = "https://127.0.0.1:5000";
