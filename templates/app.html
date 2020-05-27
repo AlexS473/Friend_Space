@@ -13,8 +13,9 @@
     {% if posts %}
 <div>
 {% for p in posts %}
-    <form action="/myfriendspace" method="delete">
+    <form action="/myfriendspace/delete/{{ p.id }}" method="post">
     <br>
+    pid = {{ p.id }}
     Posted by:{{ p.username }}
     <br>
     {{ p.text }}
@@ -29,6 +30,13 @@
 {% endfor %}
 </div>
 {% endif %}
+{% endblock %}
+
+{% block javascript %}
+	<script>
+
+    </script>
+
 {% endblock %}
 
 

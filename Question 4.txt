@@ -1,0 +1,70 @@
+Question 4
+
+I would create a new table 'Follow' and add it to the model. It would enable one user to have many followers. To represent this one to many relationship with a table I'd create a table with only two attributes: userid, following. It would also have a function that returns a list of each users followers by querying the following column of the table for all the user ids listed for the current user. 
+
+The user model would be updated with a relationship to the Follow table and its too dict would contain a list of all the users that user is following. When posts are being loaded using the loadposts function implemented then would first be checked to see that they contain a user id value that is on the current users' following list. 
+
+A follow button would also have to be added which triggers the currennt users user id and the user id of the post author to be as a new tuple in the Follow table. The next time the home page is loaded it would include the new user being followed and thus their posts will be shown. 
+
+Ofcourse this implies that the users would have to be able to unfollow users. Would would simply involve deleting that row with the current user and user's ids from the follow table. 
+
+class User(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(50), nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    password = db.Column(db.String(50), nullable=False)
+    following = db.relationship('Follow')
+	
+
+    def toDict(self):
+        return {
+            'id': self.id,
+            'username': self.username,
+            'email': self.email,
+            'password': self.password,
+	    'following': self.get_following()
+        }
+
+    def set_password(self, password):
+        
+    def check_password(self, password):
+
+    def get_following(self):
+        numfollowing = 0
+        for f in self.following:
+	    if f.userId == self.id:
+		
+	
+
+
+class Post(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    userId = db.Column(db.Integer, db.ForeignKey('user.id'))
+    text = db.Column(db.String(280), nullable=False)  # Same length as twitter
+    reacts = db.relationship('UserReact')
+
+
+    def getTotalLikes(self):
+        
+
+    def getTotalDislikes(self):
+       
+
+    def getusername(self):
+        
+
+    def toDict(self):
+        return {
+            'userId': self.userId,
+            'username': self.getusername(),  # TODO: somehow fetch username
+            'text': self.text,
+            'likes': self.getTotalLikes(),
+            'dislikes': self.getTotalDislikes()
+        }
+
+
+class UserReact(db.Model):
+    userId = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
+    postId = db.Column(db.Integer, db.ForeignKey('post.id'), primary_key=True)
+    react = db.Column(db.String(10), nullable=False)
+ 
