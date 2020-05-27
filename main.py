@@ -58,10 +58,19 @@ def authenticate():
     return redirect(url_for('login'))
 
 
+@app.route('/myfriendspace', methods=['GET'])
+@login_required
+def loadhome():
+    posts = Post.query.all()
+    posts = [p.toDict() for p in posts]
+    return render_template("app.html", posts=posts)
+
+
 @app.route('/myfriendspace', methods=['POST'])
 @login_required
 def createpost():
     newpost = request.form.to_dict()
+    print(request)
     u_id = current_user.id
     content = newpost['posttext']
     addpost = Post(userId=u_id, text=content)
@@ -74,12 +83,35 @@ def createpost():
         return "Routine already exists", 400
 
 
-@app.route('/myfriendspace', methods=['GET'])
+@app.route('/myfriendspace/like/<pid>', methods=['GET'])
 @login_required
-def loadhome():
-    posts = Post.query.all()
-    posts = [p.toDict() for p in posts]
-    return render_template("app.html", posts=posts)
+def likepost(pid):
+    newlike = UserReact(userId=current_user.id, postId=pid, react="like")
+    try:
+        db.session.add(newlike)
+        db.session.commit()
+        return redirect(url_for('loadhome'))
+    except IntegrityError:
+        db.session.rollback()
+        UserReact.query.filter_by(postId=pid).update(dict(react="like"))
+        db.session.commit()
+        return redirect(url_for('loadhome'))
+
+
+
+@app.route('/myfriendspace/dislike/<pid>', methods=['GET'])
+@login_required
+def dislikepost(pid):
+    newdislike = UserReact(userId=current_user.id, postId=pid, react="dislike")
+    try:
+        db.session.add(newdislike)
+        db.session.commit()
+        return redirect(url_for('loadhome'))
+    except IntegrityError:
+        db.session.rollback()
+        UserReact.query.filter_by(postId=pid).update(dict(react="dislike"))
+        db.session.commit()
+        return redirect(url_for('loadhome'))
 
 
 @app.route('/myfriendspace/delete/<pid>', methods=['POST'])

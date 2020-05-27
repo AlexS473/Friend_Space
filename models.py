@@ -44,7 +44,7 @@ class Post(db.Model):
 		numDislikes = 0
 		for r2 in self.reacts:
 			if r2.postId == self.id:
-				if r2 == "dislike":
+				if r2.react == "dislike":
 					numDislikes += 1
 		return numDislikes
 

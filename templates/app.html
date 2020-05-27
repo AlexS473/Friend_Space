@@ -5,28 +5,37 @@
 {{ super() }}
 
 {% block content %}
+    <div>
     <h4>Welcome {{ current_user.username }}</h4>
     <form action = "/myfriendspace" method="post">
             <input type="text" name="posttext" id="postcontent" placeholder="Say some...">
             <input type="submit" id="submit" value="Add Post">
     </form>
+    </div>
     {% if posts %}
 <div>
 {% for p in posts %}
-    <form action="/myfriendspace/delete/{{ p.id }}" method="post">
+
     <br>
-    pid = {{ p.id }}
     Posted by:{{ p.username }}
     <br>
     {{ p.text }}
     <br>
     Likes:{{ p.likes }} Dislikes:{{ p.dislikes }}
     <br>
+
+ <a href="/myfriendspace/like/{{ p.id }}">Like</a>
+ <a href="/myfriendspace/dislike/{{ p.id }}">Dislike</a>
+    <br>
+
         {% if p.userId == current_user.id %}
+            <form action="/myfriendspace/delete/{{ p.id }}" method="post">
+            <!-- The user can only delete their own posts-->
     <input type="number" name="pid" id="postid" value="{{ p.id }}" style="display: none">
     <input type="submit" id="submit" value="Delete">
     {% endif %}
     </form>
+    </div>
 {% endfor %}
 </div>
 {% endif %}
@@ -34,7 +43,11 @@
 
 {% block javascript %}
 	<script>
-
+ document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.dropdown-trigger');
+    console.log("Ehhhhh")
+    var instances = M.Dropdown.init(elems, options);
+  });
     </script>
 
 {% endblock %}
