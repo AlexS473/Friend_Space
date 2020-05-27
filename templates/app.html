@@ -1,10 +1,27 @@
 {% extends "layout.html" %}
-{% block title %}Backend App{% endblock %}
-{% block page %}Backend App{% endblock %}
+{% block title %}Friend Space{% endblock %}
+{% block page %}Friend Space{% endblock %}
 
 {{ super() }}
 
 {% block content %}
-    <h1>This view is partially rendered on the server using jinja</h1>
-    <h2>It must be dynamically served</h2>
+    <h4>Welcome {{ current_user.username }}</h4>
+    <form action = "/myfriendspace" method="post">
+            <input type="text" name="posttext" id="postcontent" placeholder="Say some...">
+            <input type="submit" id="submit" value="Add Post">
+    </form>
+    {% if posts %}
+<div>
+{% for p in posts %}
+    Posted by:{{ p.username }}
+    <br>
+    {{ p.text }}
+    <br>
+    Likes:{{ p.likes }} Dislikes:{{ p.dislikes }}
+{% endfor %}
+</div>
+{% endif %}
 {% endblock %}
+
+
+

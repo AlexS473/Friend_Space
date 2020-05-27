@@ -51,19 +51,33 @@ def authenticate():
 	if user and user.check_password(password):
 		flash('Login successful')
 		login_user(user)
-		return redirect(url_for('index'))
+		return redirect(url_for('loadhome'))
 	flash('Invalid credentials')
 	return redirect(url_for('login'))
 
 
-@app.route('/home')
-def index():
-	return render_template('app.html')
+@app.route('/myfriendspace', methods=['POST'])
+@login_required
+def createpost():
+	newpost = request.form.to_dict()
+	u_id = current_user.id
+	content = newpost['posttext']
+	addpost = Post(userId=u_id, text=content)
+	try:
+		db.session.add(addpost)
+		db.session.commit()
+		return redirect(url_for('loadhome'))
+	except IntegrityError:
+		db.session.rollback()
+		return "Routine already exists", 400
 
 
-@app.route('/app')
-def client_app():
-	return app.send_static_file('app.html')
+@app.route('/myfriendspace', methods=['GET'])
+@login_required
+def loadhome():
+	posts = Post.query.all()
+	posts = [p.toDict() for p in posts]
+	return render_template("app.html", posts=posts)
 
 
 if __name__ == '__main__':

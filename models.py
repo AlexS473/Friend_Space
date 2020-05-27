@@ -47,7 +47,8 @@ class Post(db.Model):
         return numDislikes
 
     def getusername(self):
-        name = User.query(User.username).filter_by(userId=self.userId).first()
+        name = db.session.query(User.username).filter_by(id=self.userId).first()
+        name = name[0]
         return name
 
     def toDict(self):
