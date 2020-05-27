@@ -6,37 +6,46 @@
 
 {% block content %}
     <div>
-    <h4>Welcome {{ current_user.username }}</h4>
-    <form action = "/myfriendspace" method="post">
-            <input type="text" name="posttext" id="postcontent" placeholder="Say some...">
-            <input type="submit" id="submit" value="Add Post">
-    </form>
-    </div>
-    {% if posts %}
-<div>
-{% for p in posts %}
+    <h4 style=" text-transform: capitalize; max-width: 75%; margin-left: auto; margin-right: auto">Welcome, {{ current_user.username }}!</h4>
+         <div class="card" style="max-width: 75%; margin-left: auto; margin-right: auto" >
+          <div class="card-content">
+            <form name="addForm" action = "/myfriendspace" method="post">
+              <div class="input-field">
+                <input type="text" name="posttext" id="postcontent" placeholder="Say some...">
 
+              </div>
+              <input class="btn blue white-text" type="submit" id="submit" value="Add Post" />
+            </form>
+          </div>
+        </div>
+    </div>
+    <div style="overflow: scroll">
+        {% if posts %}
+
+{% for p in posts %}
+<div class="card" style=" max-width: 75%; margin-left: auto; margin-right: auto">
+<div class="card-content">
     <br>
     Posted by:{{ p.username }}
     <br>
-    {{ p.text }}
+    <span class="card-title activator grey-text text-darken-4">{{ p.text }}</span>
     <br>
     Likes:{{ p.likes }} Dislikes:{{ p.dislikes }}
     <br>
 
  <a href="/myfriendspace/like/{{ p.id }}">Like</a>
  <a href="/myfriendspace/dislike/{{ p.id }}">Dislike</a>
-    <br>
 
         {% if p.userId == current_user.id %}
             <form action="/myfriendspace/delete/{{ p.id }}" method="post">
             <!-- The user can only delete their own posts-->
-    <input type="number" name="pid" id="postid" value="{{ p.id }}" style="display: none">
-    <input type="submit" id="submit" value="Delete">
+    <input type="number" name="pid" id="postid" value="{{ p.id }}" style="display: none"> <input class="btn grey white-text" type="submit" id="submit" value="Delete">
     {% endif %}
     </form>
+</div>
     </div>
 {% endfor %}
+            </div>
 </div>
 {% endif %}
 {% endblock %}

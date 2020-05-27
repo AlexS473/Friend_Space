@@ -93,10 +93,9 @@ def likepost(pid):
         return redirect(url_for('loadhome'))
     except IntegrityError:
         db.session.rollback()
-        UserReact.query.filter_by(postId=pid).update(dict(react="like"))
+        UserReact.query.filter_by(postId=pid, userId=current_user.id).update(dict(react="like"))
         db.session.commit()
         return redirect(url_for('loadhome'))
-
 
 
 @app.route('/myfriendspace/dislike/<pid>', methods=['GET'])
@@ -109,7 +108,7 @@ def dislikepost(pid):
         return redirect(url_for('loadhome'))
     except IntegrityError:
         db.session.rollback()
-        UserReact.query.filter_by(postId=pid).update(dict(react="dislike"))
+        UserReact.query.filter_by(postId=pid, userId=current_user.id).update(dict(react="dislike"))
         db.session.commit()
         return redirect(url_for('loadhome'))
 
@@ -117,9 +116,7 @@ def dislikepost(pid):
 @app.route('/myfriendspace/delete/<pid>', methods=['POST'])
 @login_required
 def deletepost(pid):
-    print(pid)
     post = Post.query.filter_by(id=pid).first()
-    print(post)
     db.session.delete(post)
     db.session.commit()
     return redirect(url_for('loadhome'))

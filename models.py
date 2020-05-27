@@ -32,7 +32,7 @@ class Post(db.Model):
 	text = db.Column(db.String(280), nullable=False)  # Same length as twitter
 	reacts = db.relationship('UserReact', backref='user', lazy=True, cascade="all, delete-orphan")
 
-	def getTotalLikes(self):  # TODO: Check on which user likes you counting
+	def getTotalLikes(self):
 		numLikes = 0
 		for r in self.reacts:
 			if r.postId == self.id:
