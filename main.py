@@ -77,10 +77,12 @@ def createpost():
     try:
         db.session.add(addpost)
         db.session.commit()
+        flash('New Post added!')
         return redirect(url_for('loadhome'))
     except IntegrityError:
         db.session.rollback()
-        return "Routine already exists", 400
+        flash('Oops something went wrong.')
+        return redirect(url_for('loadhome'))
 
 
 @app.route('/myfriendspace/like/<pid>', methods=['GET'])

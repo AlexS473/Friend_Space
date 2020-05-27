@@ -5,8 +5,19 @@
 {{ super() }}
 
 {% block content %}
-    <div>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <ul class="flashes" >
+    {% for category, message in messages %}
+        <span class="badge blue" >{{ message }}</span>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+
+    <div class="container">
     <h4 style=" text-transform: capitalize; max-width: 75%; margin-left: auto; margin-right: auto">Welcome, {{ current_user.username }}!</h4>
+
          <div class="card" style="max-width: 75%; margin-left: auto; margin-right: auto" >
           <div class="card-content">
             <form name="addForm" action = "/myfriendspace" method="post">
@@ -18,19 +29,18 @@
             </form>
           </div>
         </div>
-    </div>
-    <div style="overflow: scroll">
+    <div style="overflow-y: scroll; max-height: 70vh">
         {% if posts %}
 
 {% for p in posts %}
 <div class="card" style=" max-width: 75%; margin-left: auto; margin-right: auto">
 <div class="card-content">
     <br>
-    Posted by:{{ p.username }}
+    Posted by: {{ p.username }}
     <br>
     <span class="card-title activator grey-text text-darken-4">{{ p.text }}</span>
     <br>
-    Likes:{{ p.likes }} Dislikes:{{ p.dislikes }}
+    Likes: {{ p.likes }} Dislikes: {{ p.dislikes }}
     <br>
 
  <a href="/myfriendspace/like/{{ p.id }}">Like</a>
@@ -47,19 +57,13 @@
 {% endfor %}
             </div>
 </div>
+
 {% endif %}
+
 {% endblock %}
 
 {% block javascript %}
-	<script>
- document.addEventListener('DOMContentLoaded', function() {
-    var elems = document.querySelectorAll('.dropdown-trigger');
-    console.log("Ehhhhh")
-    var instances = M.Dropdown.init(elems, options);
-  });
-    </script>
 
 {% endblock %}
-
 
 
