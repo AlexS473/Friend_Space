@@ -79,6 +79,15 @@ def loadhome():
 	posts = [p.toDict() for p in posts]
 	return render_template("app.html", posts=posts)
 
-
+@app.route('/myfriendspace', methods=['DELETE'])
+login_required()
+def deletepost():
+  post = Post.query.filter_by(userId=current_user.id, id=pid)
+  poke = MyPokemon.query.filter_by(id=current_identity.id, bid=b_id).first()
+  if poke == None:
+    return 'Can\'t delete a pokemon that doesn\'t exist'
+  db.session.delete(poke)
+  db.session.commit()
+  return 'Deleted', 204
 if __name__ == '__main__':
 	app.run(host='0.0.0.0', port=8080, debug=True)

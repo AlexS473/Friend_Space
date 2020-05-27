@@ -13,11 +13,19 @@
     {% if posts %}
 <div>
 {% for p in posts %}
+    <form action="/myfriendspace" method="delete">
+    <br>
     Posted by:{{ p.username }}
     <br>
     {{ p.text }}
     <br>
     Likes:{{ p.likes }} Dislikes:{{ p.dislikes }}
+    <br>
+        {% if p.userId == current_user.id %}
+    <input type="number" name="pid" id="postid" value="{{ p.id }}" style="display: none">
+    <input type="submit" id="submit" value="Delete">
+    {% endif %}
+    </form>
 {% endfor %}
 </div>
 {% endif %}
