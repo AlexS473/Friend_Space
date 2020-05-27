@@ -1,18 +1,60 @@
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash, check_password_hash
 db = SQLAlchemy()
-import datetime
 
 
-class Logs(db.Model):
+class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    studentId =  db.Column(db.Integer, nullable=False)
-    stream = db.Column(db.Integer, nullable=False)
-    created = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+    username = db.Column(db.String(50), nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    password = db.Column(db.String(50), nullable=False)
 
     def toDict(self):
-        return{
+        return {
             'id': self.id,
-            'studentId': self.studentId,
-            'stream': self.stream,
-            'created': self.created.strftime("%m/%d/%Y, %H:%M:%S")
+            'username': self.username,
+            'email': self.email,
+            'password': self.password
         }
+
+    def set_password(self, password):
+        self.password = generate_password_hash(password, method='sha256')
+
+    def check_password(self, password):
+        return check_password_hash(self.password, password)
+
+
+class Post(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    userId = db.Column(db.Integer, db.ForeignKey('user.id'))
+    text = db.Column(db.String(280), nullable=False)  # Same length as twitter
+    reacts = db.relationship('UserReact')
+
+    def getTotalLikes(self):
+        numLikes = 0
+        for r in self.reacts:
+            if r == "like":
+                numLikes += 1
+        return numLikes
+
+    def getTotalDislikes(self):
+        numDislikes = 0
+        for r2 in self.reacts:
+            if r2 == "dislike":
+                numDislikes += 1
+        return numDislikes
+
+    def toDict(self):
+        return {
+            'userId': self.userId,
+            # 'username': self.username,  # TODO: somehow fetch username
+            'text': self.text,
+            'likes': self.getTotalLikes(),
+            'dislikes': self.getTotalDislikes()
+        }
+
+
+class UserReact(db.Model):
+    userId = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
+    postId = db.Column(db.Integer, db.ForeignKey('post.id'), primary_key=True)
+    react = db.Column(db.String(10), nullable=False)
