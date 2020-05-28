@@ -1,3 +1,4 @@
+# 816001671 Web Programming and Technologies 1 Final May 2020
 from flask_cors import CORS
 from flask_login import LoginManager, current_user, login_user, login_required
 from flask import Flask, request, render_template, redirect, flash, url_for
@@ -55,10 +56,18 @@ def authenticate():
     return redirect(url_for('login'))
 
 
+# Code previously used for project ref: https://flask-login.readthedocs.io/en/latest/
+@login_manager.unauthorized_handler
+def unauthorized():
+    flash('You\'ve got to login first.')
+    return redirect(url_for('login'))
+
+
 @app.route('/myfriendspace', methods=['GET'])
 @login_required
 def loadhome():
     posts = Post.query.all()
+    posts = posts[::-1]  # Lists the last post added first
     posts = [p.toDict() for p in posts]
     return render_template("app.html", posts=posts)
 

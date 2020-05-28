@@ -1,3 +1,4 @@
+# 816001671 Web Programming and Technologies 1 Final May 2020
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -32,6 +33,7 @@ class Post(db.Model):
 	text = db.Column(db.String(280), nullable=False)  # Same length as twitter
 	reacts = db.relationship('UserReact', backref='user', lazy=True, cascade="all, delete-orphan")
 
+	# Modelled after Methods in Models (Lab 11) https://nmendez.app/info2602/lab11/#1
 	def getTotalLikes(self):
 		numLikes = 0
 		for r in self.reacts:
@@ -40,6 +42,7 @@ class Post(db.Model):
 					numLikes += 1
 		return numLikes
 
+	# Modelled after Methods in Models (Lab 11) https://nmendez.app/info2602/lab11/#1
 	def getTotalDislikes(self):
 		numDislikes = 0
 		for r2 in self.reacts:

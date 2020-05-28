@@ -1,4 +1,5 @@
 <!doctype html>
+<!-- 816001671 Web Programming and Technologies 1 Final May 2020 -->
 <html>
   <head>
 
@@ -14,18 +15,19 @@
     <title>Friend Space</title>
 
   </head>
+
   <body onload="trigger()">
-    <nav class="light-blue lighten-2">
+    <nav class="light-blue lighten-2"> <!--https://materializecss.com/color.html used for classes
+                                        to add styles using the given materialize stylesheet-->
       <div class="nav-wrapper">
-        <a href="#!" class="brand-logo center">Friend Space</a>
+        <a class="brand-logo center">Friend Space</a>
       </div>
     </nav>
 
     <div id="content">
     <div class="container">
     <h4 style=" text-transform: capitalize; max-width: 75%; margin-left: auto; margin-right: auto">Welcome, {{ current_user.username }}!</h4>
-
-         <div class="card" style="max-width: 75%; margin-left: auto; margin-right: auto" >
+            <div class="card" style="max-width: 75%; margin-left: auto; margin-right: auto" >
           <div class="card-content">
             <form name="addForm" action = "/myfriendspace" method="post">
               <div class="input-field">
@@ -36,34 +38,39 @@
             </form>
           </div>
         </div>
-    <div style="overflow-y: scroll; max-height: 50vh">
+
 
         {% if posts %}
-
+<div style="overflow-y: scroll; min-height:50vh; max-height: 60vh">
 {% for p in posts %}
-<div class="card" style=" max-width: 75%; margin-left: auto; margin-right: auto">
+<div class="card hoverable" style=" max-width: 75%; margin-left: auto; margin-right: auto">
 <div class="card-content blue-text" style="margin-left: 10px">
 
     Posted by: {{ p.username }}
     <br>
     <span class="card-title activator grey-text text-darken-4">{{ p.text }}</span>
 
-    Likes: {{ p.likes }} Dislikes: {{ p.dislikes }}
-    <br>
-
- <a class="btn  light-blue accent-3 white-text" href="/myfriendspace/like/{{ p.id }}">Like</a>
- <a class="btn  light-blue accent-1 white-text" href="/myfriendspace/dislike/{{ p.id }}">Dislike</a>
-    {% if p.userId == current_user.id %}
-<a class="btn light-blue accent-2 white-text right" href="/myfriendspace/delete/{{ p.id }}">Delete</a>
+ <div class="dropdown"> <!--Code reused from w3 schools for dropdown menu, see source above the script tags-->
+ Likes: {{ p.likes }} <span style="margin-left: 10px"></span> Dislikes: {{ p.dislikes }}
+    <button class="btn btn-primary dropdown-toggle light-blue accent-4" type="button" data-toggle="dropdown" style="margin-left: 10px">React
+    <span class="caret"></span></button>
+    <ul class="dropdown-menu">
+      <li style="padding: 3px"><a class="btn light-blue accent-3 white-text" href="/myfriendspace/like/{{ p.id }}" >Like</a></li>
+      <li style="padding: 3px"><a class="btn light-blue accent-1 white-text" href="/myfriendspace/dislike/{{ p.id }}">Dislike</a></li>
+    </ul>
+       {% if p.userId == current_user.id %}
+<a class="btn light-blue accent-2 white-text" href="/myfriendspace/delete/{{ p.id }}" style="margin-left: 10px">Delete</a>
     {% endif %}
-    </form>
+  </div>
+
 </div>
     </div>
 {% endfor %}
             </div>
 </div>
-
 {% endif %}
+
+    <!--Code used from https://flask.palletsprojects.com/en/1.1.x/patterns/flashing/ for loading flash messages-->
         {% with messages = get_flashed_messages(with_categories=true) %}
   {% if messages %}
     {% for category, message in messages %}
@@ -74,9 +81,14 @@
 </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <!--Scripts used from https://www.w3schools.com/bootstrap/bootstrap_dropdowns.asp for dropdown menu-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+
    <script>  function trigger() {
        t = document.getElementById("message");
-       M.toast({html: t})
+       M.toast({html: t}) //Code used from https://materializecss.com/toasts.html
    }
 
    </script>
