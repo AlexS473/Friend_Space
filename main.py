@@ -1,9 +1,7 @@
-import json
 from flask_cors import CORS
 from flask_login import LoginManager, current_user, login_user, login_required
 from flask import Flask, request, render_template, redirect, flash, url_for
 from sqlalchemy.exc import IntegrityError
-from datetime import timedelta
 
 from models import db, User, Post, UserReact
 
@@ -24,9 +22,8 @@ def create_app():
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
     app.config['SECRET_KEY'] = "MYSECRET"
-    #   app.config['JWT_EXPIRATION_DELTA'] = timedelta(days = 7) # uncomment if using flsk jwt
     CORS(app)
-    login_manager.init_app(app)  # uncomment if using flask login
+    login_manager.init_app(app)
     db.init_app(app)
     return app
 
@@ -70,9 +67,11 @@ def loadhome():
 @login_required
 def createpost():
     newpost = request.form.to_dict()
-    print(request)
     u_id = current_user.id
     content = newpost['posttext']
+    if content == "":
+        flash('You gotta add words buddy.')
+        return redirect(url_for('loadhome'))
     addpost = Post(userId=u_id, text=content)
     try:
         db.session.add(addpost)
@@ -93,6 +92,7 @@ def likepost(pid):
         db.session.add(newlike)
         db.session.commit()
         return redirect(url_for('loadhome'))
+    # If the post already has a reaction from this user it will be updated:
     except IntegrityError:
         db.session.rollback()
         UserReact.query.filter_by(postId=pid, userId=current_user.id).update(dict(react="like"))
@@ -108,6 +108,7 @@ def dislikepost(pid):
         db.session.add(newdislike)
         db.session.commit()
         return redirect(url_for('loadhome'))
+    # If the post already has a reaction from this user it will be updated:
     except IntegrityError:
         db.session.rollback()
         UserReact.query.filter_by(postId=pid, userId=current_user.id).update(dict(react="dislike"))
@@ -115,12 +116,13 @@ def dislikepost(pid):
         return redirect(url_for('loadhome'))
 
 
-@app.route('/myfriendspace/delete/<pid>', methods=['POST'])
+@app.route('/myfriendspace/delete/<pid>', methods=['GET'])
 @login_required
 def deletepost(pid):
     post = Post.query.filter_by(id=pid).first()
     db.session.delete(post)
     db.session.commit()
+    flash('Posted deleted.')
     return redirect(url_for('loadhome'))
 
 

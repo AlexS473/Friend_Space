@@ -1,19 +1,27 @@
-{% extends "layout.html" %}
-{% block title %}Login {% endblock %}
-{% block page %}Login{% endblock %}
+<!doctype html>
+<html>
+  <head>
 
-{{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+     <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!--Added bootstrap stylesheet for pretty dropdown menu-->
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Login</title>
 
-{% block content %}
-     {% with messages = get_flashed_messages(with_categories=true) %}
-  {% if messages %}
-    <ul class="flashes" >
-    {% for category, message in messages %}
-        <span class="badge blue" >{{ message }}</span>
-    {% endfor %}
-    </ul>
-  {% endif %}
-{% endwith %}
+  </head>
+  <body onload="trigger()">
+    <nav class="blue">
+      <div class="nav-wrapper">
+        <a href="#" class="brand-logo center">Login</a>
+      </div>
+    </nav>
+
+    <div id="content">
     <div class="card" style="max-width: 50%; padding: 50px; margin-top: 100px; margin-left: auto; margin-right: auto">
           <div class="card-content">
             <form name="addForm" action = "/auth" method="post">
@@ -26,4 +34,22 @@
             </form>
           </div>
         </div>
-{% endblock %}
+          {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+        <span id="message" style="color:white" >{{ message }}</span>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+</div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script>  function trigger() {
+       t = document.getElementById("message");
+       M.toast({html: t})
+   }
+
+   </script>
+  </body>
+</html>
+

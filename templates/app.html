@@ -1,20 +1,27 @@
-{% extends "layout.html" %}
-{% block title %}Friend Space{% endblock %}
-{% block page %}Friend Space{% endblock %}
+<!doctype html>
+<html>
+  <head>
 
-{{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+     <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!--Added bootstrap stylesheet for pretty dropdown menu-->
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Friend Space</title>
 
-{% block content %}
-    {% with messages = get_flashed_messages(with_categories=true) %}
-  {% if messages %}
-    <ul class="flashes" >
-    {% for category, message in messages %}
-        <span class="badge blue" >{{ message }}</span>
-    {% endfor %}
-    </ul>
-  {% endif %}
-{% endwith %}
+  </head>
+  <body onload="trigger()">
+    <nav class="light-blue lighten-2">
+      <div class="nav-wrapper">
+        <a href="#!" class="brand-logo center">Friend Space</a>
+      </div>
+    </nav>
 
+    <div id="content">
     <div class="container">
     <h4 style=" text-transform: capitalize; max-width: 75%; margin-left: auto; margin-right: auto">Welcome, {{ current_user.username }}!</h4>
 
@@ -25,41 +32,29 @@
                 <input type="text" name="posttext" id="postcontent" placeholder="Say some...">
 
               </div>
-              <input class="btn blue white-text" type="submit" id="submit" value="Add Post" />
+              <input class="btn deep-purple lighten-3  white-text" type="submit" id="submit" value="Add Post" />
             </form>
           </div>
         </div>
     <div style="overflow-y: scroll; max-height: 50vh">
+
         {% if posts %}
 
 {% for p in posts %}
 <div class="card" style=" max-width: 75%; margin-left: auto; margin-right: auto">
-<div class="card-content">
+<div class="card-content blue-text" style="margin-left: 10px">
+
     Posted by: {{ p.username }}
     <br>
     <span class="card-title activator grey-text text-darken-4">{{ p.text }}</span>
-    <br>
-  <nav>
-    <div class="nav-wrapper">
-      <a href="#" class="brand-logo">Logo</a>
-      <ul id="nav-mobile" class="right hide-on-med-and-down">
-        <li><a href="sass.html">Sass</a></li>
-        <li><a href="badges.html">Components</a></li>
-        <li><a href="collapsible.html">JavaScript</a></li>
-      </ul>
-    </div>
-  </nav>
+
     Likes: {{ p.likes }} Dislikes: {{ p.dislikes }}
     <br>
 
- <a class="btn  blue lighten-1 white-text" href="/myfriendspace/like/{{ p.id }}">Like</a>
- <a class="btn  red lighten-3 white-text" href="/myfriendspace/dislike/{{ p.id }}">Dislike</a>
-
-        {% if p.userId == current_user.id %}
-            <form action="/myfriendspace/delete/{{ p.id }}" method="post">
-            <!-- The user can only delete their own posts-->
-    <input type="number" name="pid" id="postid" value="{{ p.id }}" style="display: none">
-            <input class="btn  grey darken-1 white-text" type="submit" id="submit" value="Delete">
+ <a class="btn  light-blue accent-3 white-text" href="/myfriendspace/like/{{ p.id }}">Like</a>
+ <a class="btn  light-blue accent-1 white-text" href="/myfriendspace/dislike/{{ p.id }}">Dislike</a>
+    {% if p.userId == current_user.id %}
+<a class="btn light-blue accent-2 white-text right" href="/myfriendspace/delete/{{ p.id }}">Delete</a>
     {% endif %}
     </form>
 </div>
@@ -69,8 +64,21 @@
 </div>
 
 {% endif %}
+        {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+        <span id="message" style="color:white" >{{ message }}</span>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+</div>
 
-{% endblock %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+   <script>  function trigger() {
+       t = document.getElementById("message");
+       M.toast({html: t})
+   }
 
-
-
+   </script>
+  </body>
+</html>
