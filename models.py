@@ -1,4 +1,4 @@
-# 816001671 Web Programming and Technologies 1 Final May 2020
+# Web Programming and Technologies 1 Final May 2020
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash

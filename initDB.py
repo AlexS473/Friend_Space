@@ -1,4 +1,4 @@
-# 816001671 Web Programming and Technologies 1 Final May 2020
+# Web Programming and Technologies 1 Final May 2020
 from main import app
 from models import db, User
 

@@ -1,8 +1,5 @@
 node_modules
 __pycache__
-~$6001671 - COMP 2602 Final Questions 4 and 5.docx
-
-~WRL2446.tmp
 
 Finals/.idea/
 
@@ -13,3 +10,5 @@ Finals/~$nal Exam .docx
 Finals/Finals/venv/
 
 Finals/Finals/.idea/
+
+templates/debug.log

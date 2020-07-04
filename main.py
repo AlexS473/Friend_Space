@@ -1,4 +1,4 @@
-# 816001671 Web Programming and Technologies 1 Final May 2020
+# Web Programming and Technologies 1 Final May 2020
 from flask_cors import CORS
 from flask_login import LoginManager, current_user, login_user, login_required
 from flask import Flask, request, render_template, redirect, flash, url_for
