@@ -1,4 +1,4 @@
-# Web_Final
+# Web_Final (Friend_Space)
 This repository was created to keep my Web Programming and Technologies 1 Final Exam Safe. 
 Due to the Covid-19 Pandemic or Exam became a 2 day assignment. 
 
@@ -21,6 +21,6 @@ My implementation:
 I got a perfect score for my exam, and for that I am grateful. 
 
 ### Running the App 
-    clone github.com/AlexS473/Web_Final.git
+    clone github.com/AlexS473/Friend_Space.git
     pip3 install -r requirements.txt
     python wsgi.py
