@@ -8,13 +8,13 @@ We were tasked with a very simple social media flask app. I called mine FriendSp
 Here the login page design: 
 ![login page question](https://github.com/AlexS473/Web_Final/blob/master/Screenshots/qlogin.PNG?raw=true)
 
-And the page I created: 
+And the page I created:   
 ![login page](https://github.com/AlexS473/Web_Final/blob/master/Screenshots/login.PNG?raw=true)
 
-The home page design: 
+The home page design:  
 ![posts page question](https://github.com/AlexS473/Web_Final/blob/master/Screenshots/qposts.PNG?raw=true)
 
-My implementation: 
+My implementation:   
 ![home page1](https://github.com/AlexS473/Web_Final/blob/master/Screenshots/home.png?raw=true)
 ![home page2](https://github.com/AlexS473/Web_Final/blob/master/Screenshots/home2.PNG?raw=true)
 
